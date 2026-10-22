@@ -229,4 +229,9 @@ function drawWalls(walls) {
 
   // inicial
   loadFase(0);
+  
+window.addEventListener('resize', () => {
+  loadFase(faseAtual);
+});
+
 })();
