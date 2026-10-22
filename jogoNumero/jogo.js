@@ -38,7 +38,7 @@ function startTimer(){stopTimer();state.segundos=0;EL.tempo.textContent="00:00";
 function stopTimer(){if(state.cronometro){clearInterval(state.cronometro);state.cronometro=null;}}
 
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function getImagePath(tipo,n){return tipo==="numero"?`numeros/Slide${n}.png`:`quantidade/${n}.jpg`;}
+function getImagePath(tipo,n){return tipo==="numero"?`numeros/Slide${n}.PNG`:`quantidade/${n}.jpg`;}
 
 function criarDeck(range){const [ini,fim]=range;const d=[];for(let v=ini;v<=fim;v++){d.push({valor:v,tipo:"numero",img:getImagePath("numero",v)});d.push({valor:v,tipo:"quantidade",img:getImagePath("quantidade",v)});}return shuffle(d);}
 function criarCarta(item){const frag=EL.tplCarta.content.cloneNode(true);const btn=frag.querySelector(".carta");const verso=frag.querySelector(".carta__face--verso");const img=document.createElement("img");img.src=item.img;img.alt=item.tipo+" "+item.valor;verso.appendChild(img);btn.dataset.valor=item.valor;btn.dataset.tipo=item.tipo;btn.addEventListener("click",()=>handleCliqueCarta(btn));return btn;}
