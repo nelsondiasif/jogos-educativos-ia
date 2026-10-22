@@ -79,17 +79,24 @@ const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
   }
 
   function clearWalls(){ maze.querySelectorAll('.wall').forEach(w=>w.remove()); }
-  function drawWalls(walls){
-    for(const w of walls){
-      const d = document.createElement('div');
-      d.className='wall';
-      d.style.left = w.x+'px';
-      d.style.top  = w.y+'px';
-      d.style.width  = w.w+'px';
-      d.style.height = w.h+'px';
-      maze.appendChild(d);
-    }
+  
+function drawWalls(walls) {
+  const escalaX = maze.clientWidth / 720;
+  const escalaY = maze.clientHeight / 520;
+
+  for (const w of walls) {
+    const d = document.createElement('div');
+    d.className = 'wall';
+
+    d.style.left = (w.x * escalaX) + 'px';
+    d.style.top = (w.y * escalaY) + 'px';
+    d.style.width = (w.w * escalaX) + 'px';
+    d.style.height = (w.h * escalaY) + 'px';
+
+    maze.appendChild(d);
   }
+}
+
   function place(el,x,y){ el.style.left = x+'px'; el.style.top = y+'px'; }
   function placePct(el, pct){
     // usa o tamanho atual do elemento para centralizar bem
