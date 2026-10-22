@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Jogos educativos desenvolvidos com apoio de inteligência artificial generativa para o ensino de Ciências, a Educação Infantil e a formação inicial de professores.">
+  <title>Jogos Educativos e Inteligência Artificial</title>
+  <style>
+    :root { color-scheme: light; --navy:#172a42; --muted:#4d5c6d; --bg:#f4f7fb; --accent:#0b7564; --line:#dce4ec; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--navy); line-height:1.6; }
+    header { background:linear-gradient(120deg,#193954,#176b65); color:#fff; padding:62px 20px 56px; text-align:center; }
+    header h1 { font-size:clamp(1.9rem,4vw,2.9rem); line-height:1.15; margin:0 0 14px; }
+    header p { margin:0 auto; max-width:760px; opacity:.95; }
+    main { max-width:1060px; margin:0 auto; padding:42px 20px 60px; }
+    h2 { margin:0 0 10px; font-size:1.5rem; }
+    .intro { color:var(--muted); margin:0 0 28px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:20px; }
+    article { display:flex; flex-direction:column; background:#fff; border:1px solid var(--line); border-radius:16px; padding:25px; box-shadow:0 5px 18px rgba(22,43,67,.05); }
+    .emoji { font-size:2.4rem; }
+    article h3 { font-size:1.2rem; line-height:1.35; margin:12px 0 8px; }
+    article p { color:var(--muted); margin:0 0 18px; flex:1; }
+    article a { display:inline-block; align-self:flex-start; color:#fff; background:var(--accent); border-radius:9px; font-weight:650; padding:10px 17px; text-decoration:none; }
+    article a:hover,article a:focus-visible { background:#07594d; outline-offset:3px; }
+    .note { color:var(--muted); font-size:.93rem; margin-top:28px; }
+    footer { border-top:1px solid var(--line); padding:22px 20px; text-align:center; color:var(--muted); font-size:.95rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Jogos educativos e inteligência artificial</h1>
+    <p>Recursos desenvolvidos para o ensino de Ciências, a Educação Infantil e a formação inicial de professores.</p>
+  </header>
+  <main>
+    <h2>Explore os jogos</h2>
+    <p class="intro">Selecione uma das atividades abaixo para abrir o recurso correspondente.</p>
+    <section class="grid" aria-label="Lista de jogos">
+      <article>
+        <span class="emoji" aria-hidden="true">🐜</span>
+        <h3>Labirinto da Formiga</h3>
+        <p>Coordenação motora e atenção em um percurso de desafios progressivos.</p>
+        <a href="./formigaLabirinto/index.html">Abrir jogo</a>
+      </article>
+      <article>
+        <span class="emoji" aria-hidden="true">🐆</span>
+        <h3>Números e Animais Regionais</h3>
+        <p>Associação de números e imagens de animais da fauna regional.</p>
+        <a href="./jogoNumero/index.html">Abrir jogo</a>
+      </article>
+      <article>
+        <span class="emoji" aria-hidden="true">🌿</span>
+        <h3>Memória da Fauna e Flora</h3>
+        <p>Reconhecimento de elementos da natureza por meio de um jogo da memória.</p>
+        <a href="./jogomemo/index.html">Abrir jogo</a>
+      </article>
+      <article>
+        <span class="emoji" aria-hidden="true">🎓</span>
+        <h3>Formação Inicial em Pedagogia</h3>
+        <p>Atividades de elaboração e adaptação de jogos no contexto da formação docente.</p>
+        <a href="./tarefaFinal/">Ver atividades</a>
+      </article>
+    </section>
+    <p class="note"><strong>Observação:</strong> os links pressupõem que cada pasta de jogo contenha um arquivo <code>index.html</code>. Se algum arquivo inicial tiver outro nome, ajuste o endereço do link correspondente.</p>
+  </main>
+  <footer>Projeto acadêmico · Jogos educativos com apoio de inteligência artificial generativa</footer>
+</body>
+</html>
