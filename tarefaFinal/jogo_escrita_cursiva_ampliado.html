@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Jogo de Escrita Cursiva</title>
+  <style>
+    /* =========================================================
+       🎨 ÁREA DE PERSONALIZAÇÃO DAS CORES
+       Acadêmicos: troquem as cores abaixo para deixar o jogo
+       com o estilo de vocês. Usem nomes em inglês, HEX ou RGB.
+       Exemplos: #ff8fab, yellow, rgb(100, 200, 255)
+       ========================================================= */
+    :root {
+      --cor-fundo-1: #fff3b0;
+      --cor-fundo-2: #ffd6e0;
+      --cor-principal: #6c63ff;
+      --cor-secundaria: #00b4d8;
+      --cor-destaque: #ff8c42;
+      --cor-botao: #43aa8b;
+      --cor-botao-texto: #ffffff;
+      --cor-texto: #2b2d42;
+      --cor-guia: rgba(108, 99, 255, 0.20);
+      --cor-linha-crianca: #ff006e;
+      --cor-caixa: rgba(255, 255, 255, 0.88);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--cor-texto);
+      background: linear-gradient(135deg, var(--cor-fundo-1), var(--cor-fundo-2));
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 22px 14px 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--cor-principal);
+      text-shadow: 2px 2px 0 #ffffff;
+    }
+
+    .subtitulo {
+      margin: 8px auto 0;
+      max-width: 860px;
+      font-size: clamp(1rem, 2.8vw, 1.25rem);
+      line-height: 1.4;
+    }
+
+    .painel {
+      width: min(1120px, 96vw);
+      margin: 0 auto 22px;
+      padding: 16px;
+      border-radius: 26px;
+      background: var(--cor-caixa);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.14);
+      border: 4px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .orientacoes {
+      width: min(1120px, 96vw);
+      margin: 0 auto 18px;
+      background: rgba(255,255,255,0.92);
+      border: 3px dashed var(--cor-destaque);
+      border-radius: 22px;
+      padding: 14px 18px;
+      line-height: 1.55;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .orientacoes summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--cor-destaque);
+      font-size: 1.1rem;
+    }
+
+    .orientacoes code {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .controles {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: var(--cor-botao-texto);
+      background: var(--cor-botao);
+      box-shadow: 0 6px 0 rgba(0, 0, 0, 0.18);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.2s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.05);
+    }
+
+    button:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+    }
+
+    button.ativo {
+      background: var(--cor-principal);
+    }
+
+    .botao-limpar {
+      background: #ef476f;
+    }
+
+    .botao-proximo {
+      background: var(--cor-secundaria);
+    }
+
+    .atividade {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .topo-atividade {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 10px 14px;
+      border: 3px solid rgba(108, 99, 255, 0.2);
+    }
+
+    .etiqueta {
+      font-weight: 900;
+      color: var(--cor-principal);
+      font-size: 1.05rem;
+    }
+
+    .instrucao-crianca {
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-weight: 800;
+      text-align: center;
+      color: var(--cor-texto);
+    }
+
+    .quadro-traco {
+      position: relative;
+      height: clamp(520px, 72vh, 820px);
+      width: 100%;
+      border-radius: 28px;
+      background: radial-gradient(circle at top left, #ffffff, #f7fbff 60%);
+      border: 5px solid var(--cor-secundaria);
+      overflow: hidden;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .linha-base {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      bottom: 24%;
+      height: 0;
+      border-top: 6px dashed rgba(0,0,0,0.18);
+    }
+
+    .texto-guia {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      font-family: "Segoe Script", "Comic Sans MS", "Bradley Hand", cursive;
+      font-weight: 900;
+      font-size: clamp(13.8rem, 54vw, 36rem);
+      letter-spacing: 2px;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 10px var(--cor-guia);
+      text-stroke: 10px var(--cor-guia);
+      text-shadow:
+        0 0 0 rgba(108,99,255,0.08),
+        4px 4px 0 rgba(255, 140, 66, 0.08);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .texto-guia.palavra {
+      font-size: clamp(10.2rem, 42vw, 25.5rem);
+      letter-spacing: 0;
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .rodape-atividade {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .feedback {
+      min-height: 36px;
+      text-align: center;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      font-weight: 900;
+      color: var(--cor-destaque);
+      padding: 8px 10px;
+    }
+
+    .miniaturas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .chip {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 2px solid rgba(0,0,0,0.08);
+      font-weight: 800;
+      color: var(--cor-principal);
+    }
+
+    footer {
+      text-align: center;
+      padding: 6px 10px 20px;
+      font-size: 0.92rem;
+      opacity: 0.78;
+    }
+
+    @media (max-width: 640px) {
+      .painel { padding: 10px; }
+      button { flex: 1 1 42%; padding: 12px 8px; }
+      .texto-guia { -webkit-text-stroke-width: 4px; }
+      .orientacoes { font-size: 0.94rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>✍️ Contorne e Aprenda</h1>
+    <p class="subtitulo">Treino de escrita cursiva, percepção visual e coordenação motora fina.</p>
+  </header>
+
+  <details class="orientacoes" open>
+    <summary>📌 Orientações para os acadêmicos: como alterar letras, sílabas, palavras, números e cores</summary>
+    <p>
+      Este jogo foi feito em <strong>arquivo único HTML</strong>. A criança deve contornar com o dedo, mouse ou caneta digital a letra, sílaba, palavra ou número que aparece na tela.
+    </p>
+    <p>
+      Para trocar o conteúdo da atividade, procure no código a parte chamada <code>ÁREA DE PERSONALIZAÇÃO DOS CONTEÚDOS</code>. Lá vocês podem alterar:
+    </p>
+    <ul>
+      <li><strong>Letras:</strong> troquem os itens da lista <code>letras</code>. Exemplo: <code>["a", "e", "i", "o", "u"]</code>.</li>
+      <li><strong>Sílabas:</strong> troquem os itens da lista <code>silabas</code>. Exemplo: <code>["ba", "be", "bi", "bo", "bu"]</code>.</li>
+      <li><strong>Palavras:</strong> troquem os itens da lista <code>palavras</code>. Exemplo: <code>["bola", "bolo", "bala"]</code>.</li>
+      <li><strong>Números:</strong> troquem os itens da lista <code>numeros</code>. Exemplo: <code>["1", "2", "3", "4", "5"]</code>.</li>
+    </ul>
+    <p>
+      Para mudar as cores, procure no início do CSS a parte <code>:root</code>. Vocês podem alterar <code>--cor-fundo-1</code>, <code>--cor-principal</code>, <code>--cor-linha-crianca</code> e outras variáveis. Assim cada grupo pode deixar o jogo com seu estilo visual.
+    </p>
+    <p>
+      Sugestão pedagógica: usem palavras simples, próximas da realidade da criança, como <strong>bola, bolo, casa, gato, pato, dado, mala, sapo</strong>. Também é possível adaptar para números, nomes dos estudantes, cores, animais ou objetos da sala.
+    </p>
+  </details>
+
+  <main class="painel">
+    <div class="controles">
+      <button id="btnLetra" class="ativo" type="button">🔤 Letra</button>
+      <button id="btnSilaba" type="button">🧩 Sílaba</button>
+      <button id="btnPalavra" type="button">📚 Palavra</button>
+      <button id="btnNumero" type="button">🔢 Número</button>
+    </div>
+
+    <section class="atividade" aria-label="Área do jogo de escrita cursiva">
+      <div class="topo-atividade">
+        <span class="etiqueta" id="categoriaAtual">Modo: Letra</span>
+        <span class="instrucao-crianca">Passe o dedo por cima do traçado!</span>
+        <span class="etiqueta" id="contador">1 / 8</span>
+      </div>
+
+      <div class="quadro-traco" id="quadroTraco">
+        <div class="linha-base"></div>
+        <div class="texto-guia" id="textoGuia">a</div>
+        <canvas id="telaDesenho"></canvas>
+      </div>
+
+      <div class="rodape-atividade">
+        <button class="botao-limpar" id="limpar" type="button">🧽 Limpar</button>
+        <button class="botao-proximo" id="proximo" type="button">➡️ Próximo</button>
+        <button id="concluir" type="button">🎉 Consegui!</button>
+      </div>
+
+      <div class="feedback" id="feedback">Escolha um modo e comece o traçado.</div>
+      <div class="miniaturas" id="miniaturas"></div>
+    </section>
+  </main>
+
+  <footer>
+    Recurso pedagógico para coordenação motora fina, escrita inicial e autoria digital dos acadêmicos.
+  </footer>
+
+  <script>
+    /* =========================================================
+       ✏️ ÁREA DE PERSONALIZAÇÃO DOS CONTEÚDOS
+       Acadêmicos: alterem as listas abaixo para criar o jogo
+       com letras, sílabas, palavras ou números que desejarem.
+
+       IMPORTANTE:
+       - Mantenham as aspas em cada item.
+       - Separem os itens com vírgula.
+       - Podem usar palavras simples, nomes, números ou sílabas.
+       ========================================================= */
+
+    const conteudos = {
+      letras: ["a", "e", "i", "o", "u", "b", "m", "p"],
+      silabas: ["ba", "be", "bi", "bo", "bu", "ma", "me", "mi"],
+      palavras: ["bola", "bolo", "bala", "boca", "casa", "gato", "pato", "sapo"],
+      numeros: ["1", "2", "3", "4", "5", "6", "7", "8"]
+    };
+
+    /* =========================================================
+       ⚙️ A partir daqui está a programação do jogo.
+       Mexam com cuidado. Para a maioria das adaptações, basta
+       alterar as listas acima e as cores no CSS.
+       ========================================================= */
+
+    const canvas = document.getElementById("telaDesenho");
+    const ctx = canvas.getContext("2d");
+    const quadro = document.getElementById("quadroTraco");
+    const textoGuia = document.getElementById("textoGuia");
+    const feedback = document.getElementById("feedback");
+    const contador = document.getElementById("contador");
+    const categoriaAtual = document.getElementById("categoriaAtual");
+    const miniaturas = document.getElementById("miniaturas");
+
+    const botoesModo = {
+      letras: document.getElementById("btnLetra"),
+      silabas: document.getElementById("btnSilaba"),
+      palavras: document.getElementById("btnPalavra"),
+      numeros: document.getElementById("btnNumero")
+    };
+
+    let modo = "letras";
+    let indice = 0;
+    let desenhando = false;
+    let ultimoX = 0;
+    let ultimoY = 0;
+    let pontosDesenhados = 0;
+
+    function ajustarCanvas() {
+      const rect = quadro.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      configurarCaneta();
+    }
+
+    function configurarCaneta() {
+      const corLinha = getComputedStyle(document.documentElement).getPropertyValue("--cor-linha-crianca").trim();
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.lineWidth = Math.max(14, Math.min(28, quadro.clientWidth * 0.025));
+      ctx.strokeStyle = corLinha || "#ff006e";
+    }
+
+    function limparTela() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      configurarCaneta();
+      pontosDesenhados = 0;
+      feedback.textContent = "Agora contorne o traçado com calma.";
+    }
+
+    function atualizarTela() {
+      const lista = conteudos[modo];
+      const item = lista[indice];
+      textoGuia.textContent = item;
+      textoGuia.classList.toggle("palavra", modo === "palavras" || item.length >= 4);
+
+      const nomes = {
+        letras: "Letra",
+        silabas: "Sílaba",
+        palavras: "Palavra",
+        numeros: "Número"
+      };
+
+      categoriaAtual.textContent = `Modo: ${nomes[modo]}`;
+      contador.textContent = `${indice + 1} / ${lista.length}`;
+      feedback.textContent = `Contorne: ${item}`;
+
+      Object.entries(botoesModo).forEach(([chave, botao]) => {
+        botao.classList.toggle("ativo", chave === modo);
+      });
+
+      montarMiniaturas();
+      limparTela();
+    }
+
+    function montarMiniaturas() {
+      miniaturas.innerHTML = "";
+      conteudos[modo].forEach((item, i) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = item;
+        chip.style.opacity = i === indice ? "1" : "0.58";
+        chip.style.borderColor = i === indice ? "var(--cor-principal)" : "rgba(0,0,0,0.08)";
+        miniaturas.appendChild(chip);
+      });
+    }
+
+    function posicaoDoEvento(evento) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: evento.clientX - rect.left,
+        y: evento.clientY - rect.top
+      };
+    }
+
+    function iniciarDesenho(evento) {
+      evento.preventDefault();
+      desenhando = true;
+      const pos = posicaoDoEvento(evento);
+      ultimoX = pos.x;
+      ultimoY = pos.y;
+      ctx.beginPath();
+      ctx.moveTo(ultimoX, ultimoY);
+    }
+
+    function desenhar(evento) {
+      if (!desenhando) return;
+      evento.preventDefault();
+      const pos = posicaoDoEvento(evento);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      ultimoX = pos.x;
+      ultimoY = pos.y;
+      pontosDesenhados++;
+
+      if (pontosDesenhados === 25) {
+        feedback.textContent = "Muito bem! Continue seguindo o traçado. ✨";
+      }
+    }
+
+    function pararDesenho(evento) {
+      if (!desenhando) return;
+      evento.preventDefault();
+      desenhando = false;
+      ctx.closePath();
+    }
+
+    function trocarModo(novoModo) {
+      modo = novoModo;
+      indice = 0;
+      atualizarTela();
+    }
+
+    function proximoItem() {
+      const lista = conteudos[modo];
+      indice = (indice + 1) % lista.length;
+      atualizarTela();
+    }
+
+    function concluirTracado() {
+      if (pontosDesenhados < 12) {
+        feedback.textContent = "Faça mais um pouquinho do traçado antes de concluir. 😊";
+      } else {
+        feedback.textContent = "Parabéns! Você treinou o movimento da escrita. 🎉";
+      }
+    }
+
+    canvas.addEventListener("pointerdown", iniciarDesenho);
+    canvas.addEventListener("pointermove", desenhar);
+    canvas.addEventListener("pointerup", pararDesenho);
+    canvas.addEventListener("pointercancel", pararDesenho);
+    canvas.addEventListener("pointerleave", pararDesenho);
+
+    botoesModo.letras.addEventListener("click", () => trocarModo("letras"));
+    botoesModo.silabas.addEventListener("click", () => trocarModo("silabas"));
+    botoesModo.palavras.addEventListener("click", () => trocarModo("palavras"));
+    botoesModo.numeros.addEventListener("click", () => trocarModo("numeros"));
+
+    document.getElementById("limpar").addEventListener("click", limparTela);
+    document.getElementById("proximo").addEventListener("click", proximoItem);
+    document.getElementById("concluir").addEventListener("click", concluirTracado);
+
+    window.addEventListener("resize", () => {
+      ajustarCanvas();
+      limparTela();
+    });
+
+    ajustarCanvas();
+    atualizarTela();
+  </script>
+</body>
+</html>
