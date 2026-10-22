@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Memória — Números x Quantidades</title>
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Jogo da Memória: Números x Quantidades</h1>
+
+    <div class="hud">
+      <div><strong>Nível:</strong> <span id="nivelLabel">—</span></div>
+      <div><strong>Tempo:</strong> <span id="tempo">00:00</span></div>
+      <div><strong>Jogadas:</strong> <span id="jogadas">0</span></div>
+      <div><strong>Pares:</strong> <span id="pares">0</span>/<span id="totalPares">0</span></div>
+    </div>
+
+    <div class="controls">
+      <button id="btnIniciar" class="primary">Iniciar</button>
+      <button id="btnReiniciar">Reiniciar jogo</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="tabuleiro" class="grid" aria-label="Tabuleiro do jogo"></section>
+  </main>
+
+  <div id="modalFim" class="modal" aria-hidden="true">
+    <div class="modal__content">
+      <h2 id="tituloModal">Nível concluído 🎉</h2>
+      <p>
+        Você completou o <strong><span id="resNivel"></span></strong> em
+        <strong><span id="resTempo"></span></strong> com
+        <strong><span id="resJogadas"></span></strong> jogadas.
+      </p>
+      <div class="modal__actions">
+        <button id="btnProximo" class="primary">Próximo nível</button>
+        <button id="btnFechar">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <template id="tplCarta">
+    <button class="carta" type="button">
+      <div class="carta__face carta__face--frente"></div>
+      <div class="carta__face carta__face--verso"></div>
+    </button>
+  </template>
+
+  <script src="jogo.js" defer></script>
+</body>
+</html>
