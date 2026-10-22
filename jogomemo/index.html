@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jogo da Memória</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+  <header class="topo">
+    <h1>Jogo da Memória</h1>
+    <div class="painel">
+      <div><strong>Tempo:</strong> <span id="tempo">00:00</span></div>
+      <div><strong>Movimentos:</strong> <span id="movimentos">0</span></div>
+      <div><strong>Acertos:</strong> <span id="acertos">0</span></div>
+      <button id="btnReiniciar" class="btn">Reiniciar</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="tabuleiro" class="grid" role="grid" aria-label="Tabuleiro do jogo da memória" aria-live="polite"></div>
+  </main>
+
+  <template id="tpl-card">
+    <button class="card" type="button" aria-pressed="false" aria-label="Carta virada">
+      <div class="card-inner">
+        <div class="card-front" aria-hidden="true"></div>
+        <div class="card-back" aria-hidden="true">
+          <img alt="Imagem da carta" />
+        </div>
+      </div>
+    </button>
+  </template>
+
+  <div id="modalVitoria" class="modal" hidden>
+    <div class="modal-caixa" role="dialog" aria-modal="true" aria-labelledby="tituloVitoria">
+      <h2 id="tituloVitoria">Parabéns! 🎉</h2>
+      <p>Você concluiu o jogo em <strong><span id="tempoFinal">00:00</span></strong> com <strong><span id="movFinal">0</span></strong> movimentos.</p>
+      <button id="btnJogarNovamente" class="btn grande">Jogar novamente</button>
+    </div>
+  </div>
+
+  <script src="jogo.js"></script>
+</body>
+</html>
