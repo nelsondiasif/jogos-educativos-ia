@@ -87,7 +87,67 @@ body{
 }
 .hidden{display:none}
 
-@media (max-width:780px){
-  #labirinto{width:94vw; height:68vw; max-height:70vh}
-  #ant{width:40px; height:40px}
+
+@media (max-width: 780px) {
+  body {
+    display: block;
+    padding: 10px;
+  }
+
+  .app {
+    width: 100%;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .topbar h1 {
+    text-align: center;
+    font-size: 1.4rem;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .controls select,
+  .controls button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  #labirinto {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 720 / 520;
+    max-height: none;
+  }
+
+  .pad {
+    width: 56px;
+    height: 36px;
+    font-size: 10px;
+  }
+
+  .goal {
+    width: 65px;
+    height: 65px;
+    padding: 4px;
+  }
+
+  #ant {
+    width: 36px;
+    height: 36px;
+    touch-action: none;
+  }
+
+  .hint {
+    font-size: 13px;
+    text-align: center;
+  }
 }
+
